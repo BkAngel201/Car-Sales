@@ -44,12 +44,6 @@ export const initialState =
             }
         }
 
-        case "CHOOSE_CAR":
-            return {
-                ...state,
-                ...initialState[action.payload]
-            } 
-            
         default:
             return state;
     }
