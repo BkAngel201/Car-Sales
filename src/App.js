@@ -5,8 +5,11 @@ import AddedFeatures from './components/AddedFeatures';
 import AdditionalFeatures from './components/AdditionalFeatures';
 import Total from './components/Total';
 import { addFeature, deleteFeature, chooseCar } from './actions/carActions'
+import { cars } from "./reducers/carReducer"
+import { Switch, Route, useHistory } from 'react-router-dom';
 
-const App = (props) => {   
+const App = (props) => { 
+  const history = useHistory()  
 
   const addFeatureToCar = (id) => {
     props.addFeature(id)
@@ -16,8 +19,16 @@ const App = (props) => {
     props.deleteFeature(id)
   }
 
-  return (
+  const chooseCarToShow = car => {
+    props.chooseCar(car)
+    history.push("/car")
+  }
 
+  return (
+    
+
+    <Switch>
+      <Route path="/car">
         <div className="boxes">
           <div className="box">
             <Header car={props.carOnProps} />
@@ -28,7 +39,24 @@ const App = (props) => {
             <Total car={props.carOnProps} additionalPrice={props.additionalPriceOnProps} />
           </div>
         </div>
- 
+      </Route>
+      <Route path="/">
+        <div class="tile is-parent">
+        {cars.map((car, index) => (
+              <article class="tile is-child notification is-info" onClick={() => chooseCarToShow(index)}>
+                <p class="title">{car.car.name}</p>
+                <figure class="image is-4by3">
+                  <img src={car.car.image}/>
+                </figure>
+              </article>
+            ))
+          }
+        </div>
+      </Route>
+    </Switch>
+
+
+        
   );
 };
 
